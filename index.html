@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --avocado:   #769e61;
+  --fresh:     #B6D7A8;
+  --leaf:      #6AA84F;
+  --deep:      #38761D;
+  --sprout:    #C5E3B8;
+  --ink:       #1B1B27;
+  --charcoal:  #3C3939;
+  --card:      #FDFDFD;
+  --muted:     #6b7280;
+  --border:    #ddecd5;
+}
+html, body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: transparent; color: var(--charcoal); font-size: 15px;
+  line-height: 1.5; -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 620px; margin: 0 auto; padding: 20px 16px 32px; }
+
+/* PROGRESS */
+.progress-row { display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:22px; }
+.pip { width:36px; height:5px; border-radius:99px; background:var(--border); transition:background .4s; }
+.pip.done { background:var(--fresh); }
+.pip.active { background:var(--leaf); }
+.screen { display:none; }
+.screen.active { display:block; animation:rise .4s cubic-bezier(.4,0,.2,1) both; }
+@keyframes rise { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+
+/* S1 */
+.s1-card {
+  background: linear-gradient(145deg, #2d5016 0%, #38761D 45%, #4a8f28 100%);
+  border-radius:20px; padding:50px 36px 46px; color:#fff; text-align:center;
+}
+.s1-globe { font-size:62px; display:block; margin-bottom:20px; }
+.s1-tag {
+  display:inline-block; background:rgba(182,215,168,.2); color:var(--sprout);
+  font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+  padding:4px 14px; border-radius:99px; margin-bottom:18px;
+}
+.s1-card h1 { font-size:32px; font-weight:800; line-height:1.2; margin-bottom:14px; letter-spacing:-.5px; color:#fff; }
+.s1-card h1 em { font-style:normal; color:var(--sprout); }
+.s1-card p { font-size:15px; color:rgba(255,255,255,.78); line-height:1.75; max-width:380px; margin:0 auto 32px; }
+.pvw { display:flex; justify-content:center; flex-wrap:wrap; gap:3px; max-width:240px; margin:0 auto 32px; opacity:.35; }
+.pd { width:8px; height:8px; border-radius:2px; background:var(--sprout); }
+
+/* S2 */
+.s2-card {
+  background:var(--card); border-radius:20px; padding:40px 36px;
+  box-shadow:0 2px 24px rgba(56,118,29,.08),0 0 0 1px rgba(56,118,29,.06);
+}
+.badge-pill {
+  display:inline-flex; align-items:center; background:var(--sprout); color:var(--deep);
+  font-size:11px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase;
+  padding:5px 14px; border-radius:99px; margin-bottom:20px;
+}
+.s2-card h2 { font-size:22px; font-weight:800; line-height:1.3; margin-bottom:8px; color:var(--ink); }
+.s2-card .sub { font-size:14px; color:var(--muted); margin-bottom:36px; line-height:1.65; }
+.num-row { display:flex; align-items:flex-end; justify-content:center; gap:3px; margin-bottom:4px; }
+.big-n { font-size:82px; font-weight:900; line-height:1; color:var(--leaf); letter-spacing:-3px; transition:color .2s; min-width:2ch; text-align:right; }
+.big-p { font-size:38px; font-weight:800; color:var(--leaf); padding-bottom:10px; transition:color .2s; }
+.slider-hint { text-align:center; font-size:13px; color:var(--muted); margin-bottom:18px; }
+input[type=range] { -webkit-appearance:none; width:100%; height:8px; border-radius:99px; background:var(--border); outline:none; cursor:pointer; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:30px; height:30px; border-radius:50%; background:var(--leaf); cursor:pointer; box-shadow:0 2px 12px rgba(106,168,79,.45); transition:transform .1s; }
+input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.1); }
+input[type=range]::-moz-range-thumb { width:26px; height:26px; border-radius:50%; background:var(--leaf); border:none; }
+.range-ends { display:flex; justify-content:space-between; font-size:12px; color:#9ca3af; margin-top:8px; margin-bottom:30px; }
+
+/* S3 */
+.s3-card {
+  background:var(--card); border-radius:20px; padding:36px 30px;
+  box-shadow:0 2px 24px rgba(56,118,29,.08),0 0 0 1px rgba(56,118,29,.06);
+}
+.s3-card h2 { font-size:22px; font-weight:800; text-align:center; margin-bottom:20px; color:var(--ink); }
+.cmp-row { display:flex; gap:8px; background:#f4f9f1; border-radius:14px; padding:16px; margin-bottom:18px; align-items:center; }
+.cpill { flex:1; text-align:center; }
+.cl { font-size:10px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
+.cv { font-size:38px; font-weight:900; line-height:1; letter-spacing:-1px; }
+.cv.g { color:#b0b8aa; }
+.cv.r { color:var(--deep); }
+.cs { font-size:12px; color:var(--muted); margin-top:3px; }
+.vs-div { font-size:18px; font-weight:700; color:var(--border); padding:0 4px; }
+.callout {
+  background:linear-gradient(90deg, #eef6e9, #f4f9f1);
+  border-left:4px solid var(--leaf);
+  border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.65; margin-bottom:16px;
+}
+.callout strong { color:var(--deep); }
+.canvas-cap { text-align:center; font-size:12px; color:var(--muted); margin-bottom:9px; }
+canvas { display:block; margin:0 auto; border-radius:8px; }
+.legend-row { display:flex; flex-wrap:wrap; gap:8px 16px; justify-content:center; margin:12px 0 22px; }
+.leg { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--charcoal); }
+.lsq { width:11px; height:11px; border-radius:3px; flex-shrink:0; }
+
+/* S4 */
+.s4-top {
+  background:linear-gradient(145deg, #2d5016, #38761D);
+  border-radius:20px 20px 0 0; padding:44px 36px 40px; color:#fff; text-align:center;
+}
+.s4-trophy { font-size:52px; display:block; margin-bottom:14px; }
+.s4-top h2 { font-size:26px; font-weight:900; line-height:1.2; letter-spacing:-.5px; margin-bottom:12px; }
+.s4-top p { font-size:15px; opacity:.88; line-height:1.75; max-width:400px; margin:0 auto 28px; }
+.badge-row { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; }
+.badge { background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.28); border-radius:99px; padding:7px 18px; font-size:13px; font-weight:600; }
+.s4-bot {
+  background:var(--card); border-radius:0 0 20px 20px; padding:28px 32px;
+  box-shadow:0 4px 24px rgba(56,118,29,.08);
+}
+
+/* Punchline */
+.punchline {
+  background:var(--sprout);
+  border:1.5px solid var(--fresh);
+  border-radius:14px; padding:22px 20px 20px; text-align:center;
+}
+.punchline-qs { font-size:32px; margin-bottom:12px; }
+.punchline p { font-size:15px; color:var(--ink); line-height:1.75; }
+.punchline p strong { color:var(--deep); }
+.yl { color:#8a6000; font-weight:700; }
+.punchline-sub { font-size:13px; color:#4a6b3a; margin-top:10px !important; font-style:italic; }
+
+/* Buttons */
+.btn { display:block; width:100%; padding:15px 24px; border:none; border-radius:12px; font-size:15px; font-weight:700; cursor:pointer; transition:all .18s; text-align:center; }
+.btn-l { background:var(--leaf); color:#fff; box-shadow:0 4px 14px rgba(106,168,79,.35); }
+.btn-l:hover { background:var(--avocado); transform:translateY(-1px); box-shadow:0 6px 18px rgba(106,168,79,.4); }
+.btn-w { background:rgba(255,255,255,.18); color:#fff; border:2px solid rgba(255,255,255,.38); }
+.btn-w:hover { background:rgba(255,255,255,.28); transform:translateY(-1px); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="progress-row">
+    <div class="pip active" id="pip0"></div>
+    <div class="pip" id="pip1"></div>
+    <div class="pip" id="pip2"></div>
+    <div class="pip" id="pip3"></div>
+  </div>
+
+  <!-- SCREEN 1: INTRO -->
+  <div class="screen active" id="s1">
+    <div class="s1-card">
+      <span class="s1-globe">🌍</span>
+      <div class="s1-tag">Quick reality check</div>
+      <h1>How far ahead are<br><em>you</em>, really?</h1>
+      <p>8.1 billion people share this planet. Where does your team rank on AI adoption? Take a guess — the answer will surprise you.</p>
+      <div class="pvw" id="pvw"></div>
+      <button class="btn btn-w" onclick="goTo(2)">Take a guess →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: GUESS -->
+  <div class="screen" id="s2">
+    <div class="s2-card">
+      <div class="badge-pill">Your gut feeling</div>
+      <h2>Out of everyone on Earth, what share do you think pays for an AI tool?</h2>
+      <p class="sub">ChatGPT Plus, Claude Pro, Microsoft Copilot — anything with a paid subscription. No right or wrong here, just go with your instinct.</p>
+      <div class="num-row">
+        <div class="big-n" id="bigN">25</div>
+        <div class="big-p" id="bigP">%</div>
+      </div>
+      <p class="slider-hint">Slide to set your guess</p>
+      <input type="range" id="sl" min="0" max="50" step="1" value="25" oninput="updSlider(this.value)">
+      <div class="range-ends"><span>0% — almost no one</span><span>50% — roughly half</span></div>
+      <button class="btn btn-l" onclick="submitGuess()">That's my answer →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: REVEAL -->
+  <div class="screen" id="s3">
+    <div class="s3-card">
+      <h2>Here's what the data actually shows.</h2>
+      <div class="cmp-row">
+        <div class="cpill">
+          <div class="cl">Your guess</div>
+          <div class="cv g" id="gDisp">—</div>
+          <div class="cs">of the world</div>
+        </div>
+        <div class="vs-div">vs</div>
+        <div class="cpill">
+          <div class="cl">Reality</div>
+          <div class="cv r">0.3%</div>
+          <div class="cs">of the world</div>
+        </div>
+      </div>
+      <div class="callout" id="callout" style="display:none">
+        <strong>That's roughly the population of Australia — out of 8.1 billion.</strong> AI feels ubiquitous, but most of the world hasn't touched it yet. That grey expanse below is everyone else.
+      </div>
+      <p class="canvas-cap">Each square ≈ 3.2 million people · 2,500 squares = 8.1 billion humans</p>
+      <canvas id="dotcv"></canvas>
+      <div class="legend-row">
+        <div class="leg"><div class="lsq" style="background:#ccccc4"></div>Never used AI — 6.8B (84%)</div>
+        <div class="leg"><div class="lsq" style="background:#5cb85c"></div>Free chatbot user — 1.3B (16%)</div>
+        <div class="leg"><div class="lsq" style="background:#f0a500"></div>Pays for AI — ~20M (0.3%)</div>
+        <div class="leg"><div class="lsq" style="background:#d94f4f"></div>Uses coding AI — ~3M (0.04%)</div>
+      </div>
+      <button class="btn btn-l" onclick="goTo(4)">So what does this mean for us? →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: PAYOFF -->
+  <div class="screen" id="s4">
+    <div class="s4-top">
+      <span class="s4-trophy">🌱</span>
+      <h2>You're already further ahead<br>than you probably realise.</h2>
+      <p>The fact that you're here — actively investing in AI skills — puts you in a genuinely small group.</p>
+      <div class="badge-row">
+        <div class="badge">Ahead of 99.7% of the world</div>
+        <div class="badge">In good company</div>
+      </div>
+    </div>
+    <div class="s4-bot">
+      <div class="punchline">
+        <div class="punchline-qs">🤔</div>
+        <p>And of those <span class="yl">yellow dots</span> — the ~20 million people who actually pay for AI — how many do you think use it with genuine <strong>creativity and critical thinking?</strong></p>
+        <p class="punchline-sub">That tiny sliver is where the real difference gets made. And it's exactly what we're here to work on together.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var userGuess = 25;
+var COLS = 50, TOTAL = 2500;
+var CMAP = { gray:'#ccccc4', green:'#5cb85c', yellow:'#f0a500', red:'#d94f4f' };
+var revealed = false;
+
+function dotCol(i) {
+  var e = TOTAL - 1 - i;
+  if (e === 0) return 'red';
+  if (e <= 8)  return 'yellow';
+  if (e <= 408) return 'green';
+  return 'gray';
+}
+
+function setPips(a) {
+  for (var i = 0; i < 4; i++) {
+    var el = document.getElementById('pip'+i);
+    el.classList.remove('active','done');
+    if (i < a-1) el.classList.add('done');
+    if (i === a-1) el.classList.add('active');
+  }
+}
+
+function goTo(n) {
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById('s'+n).classList.add('active');
+  setPips(n);
+  if (n === 3) setTimeout(startReveal, 350);
+}
+
+function updSlider(v) {
+  userGuess = +v;
+  document.getElementById('bigN').textContent = v;
+  var c = v > 25 ? '#c0392b' : v > 10 ? '#e67e22' : '#6AA84F';
+  document.getElementById('bigN').style.color = c;
+  document.getElementById('bigP').style.color = c;
+}
+
+function submitGuess() {
+  document.getElementById('gDisp').textContent = userGuess + '%';
+  goTo(3);
+}
+
+function startReveal() {
+  if (revealed) return;
+  revealed = true;
+
+  var canvas = document.getElementById('dotcv');
+  var ctx = canvas.getContext('2d');
+  var cw = Math.min(560, (canvas.parentElement.clientWidth || 560) - 20);
+  var ds = Math.floor((cw - COLS * 2) / COLS);
+  var cell = ds + 2;
+  canvas.width  = cell * COLS - 2;
+  canvas.height = cell * 50 - 2;
+
+  function drawDot(idx, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect((idx % COLS) * cell, Math.floor(idx / COLS) * cell, ds, ds);
+  }
+
+  for (var i = 0; i < TOTAL; i++) drawDot(i, CMAP.gray);
+
+  var colored = [];
+  for (var j = TOTAL - 409; j < TOTAL; j++) colored.push(j);
+  var ci = 0;
+
+  function frame() {
+    for (var b = 0; b < 4 && ci < colored.length; b++, ci++) {
+      drawDot(colored[ci], CMAP[dotCol(colored[ci])]);
+    }
+    if (ci < colored.length) requestAnimationFrame(frame);
+    else setTimeout(function(){ document.getElementById('callout').style.display='block'; }, 200);
+  }
+  setTimeout(function(){ requestAnimationFrame(frame); }, 650);
+}
+
+(function(){
+  var w = document.getElementById('pvw');
+  for (var i = 0; i < 60; i++) {
+    var d = document.createElement('div');
+    d.className = 'pd';
+    d.style.opacity = (Math.random() * 0.5 + 0.15).toFixed(2);
+    w.appendChild(d);
+  }
+})();
+</script>
+</body>
+</html>
