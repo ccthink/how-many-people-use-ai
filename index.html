@@ -22,7 +22,10 @@ html, body {
   background: transparent; color: var(--charcoal); font-size: 15px;
   line-height: 1.5; -webkit-font-smoothing: antialiased;
 }
-.wrap { max-width: 620px; margin: 0 auto; padding: 20px 16px 32px; }
+.wrap {
+  max-width: 620px; margin: 0 auto; padding: 20px 16px 32px;
+  min-height: 820px; /* keeps frame height stable across all screens */
+}
 
 /* PROGRESS */
 .progress-row { display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:22px; }
@@ -86,17 +89,17 @@ input[type=range]::-moz-range-thumb { width:26px; height:26px; border-radius:50%
 .cv.r { color:var(--deep); }
 .cs { font-size:12px; color:var(--muted); margin-top:3px; }
 .vs-div { font-size:18px; font-weight:700; color:var(--border); padding:0 4px; }
+.canvas-cap { text-align:center; font-size:12px; color:var(--muted); margin-bottom:9px; }
+canvas { display:block; margin:0 auto; border-radius:8px; }
+.legend-row { display:flex; flex-wrap:wrap; gap:8px 16px; justify-content:center; margin:12px 0 16px; }
+.leg { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--charcoal); }
+.lsq { width:11px; height:11px; border-radius:3px; flex-shrink:0; }
 .callout {
   background:linear-gradient(90deg, #eef6e9, #f4f9f1);
   border-left:4px solid var(--leaf);
-  border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.65; margin-bottom:16px;
+  border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.65; margin-top:4px; margin-bottom:22px;
 }
 .callout strong { color:var(--deep); }
-.canvas-cap { text-align:center; font-size:12px; color:var(--muted); margin-bottom:9px; }
-canvas { display:block; margin:0 auto; border-radius:8px; }
-.legend-row { display:flex; flex-wrap:wrap; gap:8px 16px; justify-content:center; margin:12px 0 22px; }
-.leg { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--charcoal); }
-.lsq { width:11px; height:11px; border-radius:3px; flex-shrink:0; }
 
 /* S4 */
 .s4-top {
@@ -158,15 +161,15 @@ canvas { display:block; margin:0 auto; border-radius:8px; }
   <div class="screen" id="s2">
     <div class="s2-card">
       <div class="badge-pill">Your gut feeling</div>
-      <h2>Out of everyone on Earth, what share do you think pays for an AI tool?</h2>
-      <p class="sub">ChatGPT Plus, Claude Pro, Microsoft Copilot — anything with a paid subscription. No right or wrong here, just go with your instinct.</p>
+      <h2>How many people on Earth have never used AI before?</h2>
+      <p class="sub">Think about everyone — not just people like you. What share of the world's 8.1 billion people do you reckon haven't touched an AI tool? Go with your gut.</p>
       <div class="num-row">
-        <div class="big-n" id="bigN">25</div>
+        <div class="big-n" id="bigN">50</div>
         <div class="big-p" id="bigP">%</div>
       </div>
       <p class="slider-hint">Slide to set your guess</p>
-      <input type="range" id="sl" min="0" max="50" step="1" value="25" oninput="updSlider(this.value)">
-      <div class="range-ends"><span>0% — almost no one</span><span>50% — roughly half</span></div>
+      <input type="range" id="sl" min="0" max="100" step="1" value="50" oninput="updSlider(this.value)">
+      <div class="range-ends"><span>0% — almost no one</span><span>100% — everyone</span></div>
       <button class="btn btn-l" onclick="submitGuess()">That's my answer →</button>
     </div>
   </div>
@@ -179,17 +182,14 @@ canvas { display:block; margin:0 auto; border-radius:8px; }
         <div class="cpill">
           <div class="cl">Your guess</div>
           <div class="cv g" id="gDisp">—</div>
-          <div class="cs">of the world</div>
+          <div class="cs">have never used AI</div>
         </div>
         <div class="vs-div">vs</div>
         <div class="cpill">
           <div class="cl">Reality</div>
-          <div class="cv r">0.3%</div>
-          <div class="cs">of the world</div>
+          <div class="cv r">84%</div>
+          <div class="cs">have never used AI</div>
         </div>
-      </div>
-      <div class="callout" id="callout" style="display:none">
-        <strong>That's roughly the population of Australia — out of 8.1 billion.</strong> AI feels ubiquitous, but most of the world hasn't touched it yet. That grey expanse below is everyone else.
       </div>
       <p class="canvas-cap">Each square ≈ 3.2 million people · 2,500 squares = 8.1 billion humans</p>
       <canvas id="dotcv"></canvas>
@@ -199,7 +199,10 @@ canvas { display:block; margin:0 auto; border-radius:8px; }
         <div class="leg"><div class="lsq" style="background:#f0a500"></div>Pays for AI — ~20M (0.3%)</div>
         <div class="leg"><div class="lsq" style="background:#d94f4f"></div>Uses coding AI — ~3M (0.04%)</div>
       </div>
-      <button class="btn btn-l" onclick="goTo(4)">So what does this mean for us? →</button>
+      <div class="callout" id="callout" style="display:none">
+        <strong>6.8 billion people — the vast majority of the world — have never opened an AI tool.</strong> It feels like AI is everywhere, but that's largely because of the bubble most of us work in. For most of the planet, it hasn't arrived yet.
+      </div>
+      <button class="btn btn-l" onclick="goTo(4)" style="margin-top:6px">So what does this mean for us? →</button>
     </div>
   </div>
 
@@ -225,7 +228,7 @@ canvas { display:block; margin:0 auto; border-radius:8px; }
 </div>
 
 <script>
-var userGuess = 25;
+var userGuess = 50;
 var COLS = 50, TOTAL = 2500;
 var CMAP = { gray:'#ccccc4', green:'#5cb85c', yellow:'#f0a500', red:'#d94f4f' };
 var revealed = false;
@@ -257,7 +260,7 @@ function goTo(n) {
 function updSlider(v) {
   userGuess = +v;
   document.getElementById('bigN').textContent = v;
-  var c = v > 25 ? '#c0392b' : v > 10 ? '#e67e22' : '#6AA84F';
+  var c = v < 50 ? '#c0392b' : v < 75 ? '#e67e22' : '#6AA84F';
   document.getElementById('bigN').style.color = c;
   document.getElementById('bigP').style.color = c;
 }
